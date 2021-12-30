@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum TaskType {
+  DIRECT
+  SUBMISSION
+  GROUP
+}
+
+model User {
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  schoolName String
+  email      String
+  password   String
+  points     Int      @default(0)
+  admin      Boolean  @default(false)
+}
+
+model Task {
+  id             String     @id @default(uuid())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  points         Int        @default(0)
+  showPoints     Boolean    @default(true)
+  showTask       Boolean    @default(true)
+  description    String     @db.LongText
+  taskDeadline   DateTime?
+  timeDecay      Int
+  answer         String?    @db.LongText
+}
+
+model UserTask {
+  id                String     @id @default(uuid())
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  completed_at      DateTime?
+  submission        String     @db.LongText
+  pointsReceived    Int
+}
