@@ -6,13 +6,12 @@ module.exports = {
     extend: {
       colors: {
         exun: "#2977f5",
-        "exun-dark": "#2977f5",
-        "exun-light": "#2977f5",
+        "exun-dark": "#1e59b9",
+        "exun-light": "#7fadf7",
       },
       fontFamily: {
         sans: [
-          "Spline Sans",
-          "monospace",
+          "Inter",
           "-apple-system",
           "BlinkMacSystemFont",
           '"Segoe UI"',

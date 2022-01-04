@@ -1,12 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap");
 
 @layer components {
   /* .custom-class { */
   /*   @apply ...; */
   /* } */
+
+  .input-group:focus-within label {
+    @apply text-exun-light;
+  }
+
+  .input-group label {
+    @apply text-xs font-bold uppercase text-gray-400 mb-3 transition;
+  }
+
+  .input-group input,
+  .input-group textarea {
+    @apply border-2 border-gray-bg focus:border-exun focus:outline-none rounded-lg p-3 w-full;
+  }
+
+  .input-group .error {
+    @apply text-xs text-red-500;
+  }
 }
 
 body > div,
@@ -18,4 +34,8 @@ html {
   width: 100%;
   min-height: 100vh;
   min-width: 100vw;
+}
+
+.debug {
+  @apply border border-black;
 }

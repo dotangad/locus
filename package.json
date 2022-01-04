@@ -3,18 +3,25 @@
   "name": "remix-app-template",
   "description": "",
   "license": "",
+  "prisma": {},
   "scripts": {
     "build": "npm run build:css && remix build",
     "build:css": "tailwindcss -o ./app/tailwind.css",
-    "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
+    "dev": "concurrently \"npm run dev:css\" \"node -r dotenv/config node_modules/.bin/remix dev\"",
     "dev:css": "tailwindcss -o ./app/tailwind.css --watch",
     "postinstall": "remix setup node",
-    "start": "remix-serve build"
+    "start": "remix-serve build",
+    "db:seed": "node --require esbuild-register prisma/seed.ts",
+    "db:reset": "prisma migrate reset && prisma db push && npm run db:seed"
   },
   "dependencies": {
     "@prisma/client": "^3.7.0",
     "@remix-run/react": "^1.1.1",
     "@remix-run/serve": "^1.1.1",
+    "@types/bcrypt": "^5.0.0",
+    "bcrypt": "^5.0.1",
+    "date-fns": "^2.28.0",
+    "faker": "^5.5.3",
     "prisma-client": "^0.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -22,12 +29,18 @@
   },
   "devDependencies": {
     "@remix-run/dev": "^1.1.1",
+    "@tailwindcss/typography": "^0.5.0",
+    "@types/faker": "^5.5.9",
+    "@types/node": "^17.0.5",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "concurrently": "^6.5.1",
+    "dotenv": "^10.0.0",
+    "esbuild-register": "^3.3.1",
     "prisma": "^3.7.0",
     "tailwindcss": "^3.0.7",
-    "typescript": "^4.1.2"
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
   },
   "engines": {
     "node": ">=14"

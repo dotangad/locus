@@ -21,23 +21,29 @@ model User {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   schoolName String
-  email      String
+  email      String   @unique
   password   String
   points     Int      @default(0)
   admin      Boolean  @default(false)
+  tasks      UserTask[]
 }
 
 model Task {
-  id             String     @id @default(uuid())
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  points         Int        @default(0)
-  showPoints     Boolean    @default(true)
-  showTask       Boolean    @default(true)
-  description    String     @db.LongText
+  id             String        @id @default(uuid())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  title          String        @db.Text
+  tags           String        @db.Text
   taskDeadline   DateTime?
-  timeDecay      Int
-  answer         String?    @db.LongText
+  timeDecay      Int?
+  description    String        @db.LongText
+  points         Int           @default(0)
+  showPoints     Boolean       @default(true)
+  showTask       Boolean       @default(true)
+  answer         String?       @db.LongText
+  type           TaskType      @default(DIRECT)
+  retry          Boolean       @default(false)
+  users          UserTask[]
 }
 
 model UserTask {
@@ -45,6 +51,20 @@ model UserTask {
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
   completed_at      DateTime?
-  submission        String     @db.LongText
-  pointsReceived    Int
+  submission        String?    @db.LongText
+  pointsReceived    Int?
+  userId            String
+  user              User       @relation(fields: [userId], references: [id])
+  taskId            String
+  task              Task       @relation(fields: [taskId], references: [id])
+  attempts          UserAttempt[]
+}
+
+model UserAttempt {
+  id                String     @id @default(uuid())
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  userTaskId        String
+  userTask          UserTask   @relation(fields: [userTaskId], references: [id])
+  attempt           String
 }

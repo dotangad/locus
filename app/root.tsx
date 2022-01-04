@@ -11,18 +11,9 @@ import styles from "./tailwind.css";
 
 export function links() {
   return [
-    { rel: "preconnect", href: "https://fonts.googleapis.com" },
-    {
-      rel: "preconnect",
-      href: "https://fonts.googleapis.com",
-      crossOriginIsolated: true,
-      crossorigin: true,
-    },
-    {
-      rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap",
-    },
+    { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
     { rel: "stylesheet", href: styles },
+    { rel: "shortcut icon", href: "/favicon.png", type: "image/png" },
   ];
 }
 
@@ -40,7 +31,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-gray-100">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
