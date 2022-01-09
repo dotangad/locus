@@ -37,8 +37,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Leaderboard() {
   const { user, users } = useLoaderData<LoaderData>();
 
-  console.table(users);
-
   return (
     <Layout user={user}>
       <div className="px-5 max-w-screen-lg w-full mx-auto my-10">

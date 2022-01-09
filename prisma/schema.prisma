@@ -29,21 +29,22 @@ model User {
 }
 
 model Task {
-  id             String        @id @default(uuid())
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  title          String        @db.Text
-  tags           String        @db.Text
-  taskDeadline   DateTime?
-  timeDecay      Int?
-  description    String        @db.LongText
-  points         Int           @default(0)
-  showPoints     Boolean       @default(true)
-  showTask       Boolean       @default(true)
-  answer         String?       @db.LongText
-  type           TaskType      @default(DIRECT)
-  retry          Boolean       @default(false)
-  users          UserTask[]
+  id                 String        @id @default(uuid())
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  title              String        @db.Text
+  tags               String        @db.Text
+  taskDeadline       DateTime?
+  timeDecay          Int?
+  description        String        @db.LongText
+  points             Int           @default(0)
+  showPoints         Boolean       @default(true)
+  showTask           Boolean       @default(true)
+  answer             String?       @db.LongText
+  type               TaskType      @default(DIRECT)
+  groupQuestions     Int?
+  retry              Boolean       @default(false)
+  users              UserTask[]
 }
 
 model UserTask {
