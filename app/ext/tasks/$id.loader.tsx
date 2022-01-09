@@ -23,7 +23,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       timeDecay: true,
       description: true,
       points: true,
-      showPoints: true,
       showTask: true,
       answer: false,
       type: true,

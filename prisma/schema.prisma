@@ -38,12 +38,11 @@ model Task {
   timeDecay          Int?
   description        String        @db.LongText
   points             Int           @default(0)
-  showPoints         Boolean       @default(true)
   showTask           Boolean       @default(true)
   answer             String?       @db.LongText
   type               TaskType      @default(DIRECT)
   groupQuestions     Int?
-  retry              Boolean       @default(false)
+  retry              Boolean?       @default(false)
   users              UserTask[]
 }
 

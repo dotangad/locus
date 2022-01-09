@@ -4,9 +4,9 @@ import faker from "faker";
 import bcrypt from "bcrypt";
 const db = new PrismaClient();
 
-async function seed() {
+async function seedUsers(n: number) {
   const password = await bcrypt.hash("password", 10);
-  await Promise.all([
+  return Promise.all([
     db.user.create({
       data: {
         schoolName: "Admin Account",
@@ -16,7 +16,7 @@ async function seed() {
       },
     }),
     db.user.createMany({
-      data: Array(100)
+      data: Array(n - 1)
         .fill("-")
         .map(() => {
           const firstName = faker.name.firstName();
@@ -28,13 +28,27 @@ async function seed() {
           };
         }),
     }),
-    db.task.createMany({
-      data: Array(100)
-        .fill("-")
-        .map(() => ({
-          type: (Math.random() > 0.5 ? "DIRECT" : "SUBMISSION") as TaskType,
+  ]);
+}
+
+async function seedTasks() {
+  return db.task.createMany({
+    data: Array(100)
+      .fill("-")
+      .map(() => {
+        const type = (
+          Math.random() > 0.5
+            ? "DIRECT"
+            : Math.random() > 0.5
+            ? "GROUP"
+            : "SUBMISSION"
+        ) as TaskType;
+        const groupQuestions =
+          type == "GROUP" ? Math.floor((Math.random() * 10) % 5) + 1 : null;
+
+        return {
+          type,
           points: 1000,
-          showPoints: Math.random() > 0.5,
           showTask: Math.random() > 0.5,
           title: faker.company.catchPhrase(),
           tags: JSON.stringify([
@@ -47,10 +61,25 @@ async function seed() {
           taskDeadline:
             Math.random() > 0.5 ? null : add(new Date(), { days: 5 }),
           timeDecay: Math.floor(Math.random() * 10),
-          answer: "answer123123",
-        })),
-    }),
-  ]);
+          groupQuestions,
+          retry: type == "DIRECT" ? Math.random() > 0.5 : null,
+          answer:
+            type == "GROUP"
+              ? JSON.stringify(
+                  Array(groupQuestions)
+                    .fill(1)
+                    .map(() => "answer123123")
+                )
+              : type == "SUBMISSION"
+              ? null
+              : "answer123123",
+        };
+      }),
+  });
+}
+
+async function seed() {
+  await Promise.all([seedUsers(100), seedTasks()]);
 }
 
 seed();

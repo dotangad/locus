@@ -13,6 +13,7 @@ import Meta from "~/components/task/$id/Meta";
 import DirectSubForm from "~/components/task/$id/DirectSubForm";
 import { LoaderData, loader as loaderFn } from "~/ext/tasks/$id.loader";
 import { action as actionFn } from "~/ext/tasks/$id.action";
+import GroupSubForm from "~/components/task/$id/GroupSubForm";
 
 export const loader: LoaderFunction = loaderFn;
 export const action: ActionFunction = actionFn;
@@ -41,7 +42,11 @@ export default function Task() {
                 userTask.completed_at ? (
                   <CompletedCard userTask={userTask} task={task} />
                 ) : task.type === "GROUP" ? (
-                  <div>group</div>
+                  <GroupSubForm
+                    userTask={userTask}
+                    task={task}
+                    error={actionData?.error}
+                  />
                 ) : (
                   <DirectSubForm error={actionData?.error} />
                 )

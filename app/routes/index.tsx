@@ -26,6 +26,13 @@ export const loader: LoaderFunction = async ({ request }) => {
       .map((ut) => ({ ...ut, task: tasks.find(({ id }) => ut.taskId === id) })),
     completedTasks: userTasks
       .filter(({ completed_at }) => completed_at)
+      .sort(
+        (a, b) =>
+          // @ts-ignore
+          new Date(b.completed_at).getTime() -
+          // @ts-ignore
+          new Date(a.completed_at).getTime()
+      )
       .map((ut) => ({ ...ut, task: tasks.find(({ id }) => ut.taskId === id) })),
     unopenedTasks: tasks.filter(
       ({ id }) => !userTasks.some(({ taskId }) => taskId === id)
