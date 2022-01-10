@@ -7,6 +7,7 @@ export type LoaderData = {
   user: User;
   task: Task;
   userTask: UserTask;
+  canOpen: boolean;
 };
 export const loader: LoaderFunction = async ({ request, params }) => {
   await ensureAuthenticated(request);
@@ -24,10 +25,28 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       description: true,
       points: true,
       showTask: true,
-      answer: false,
       type: true,
       groupQuestions: true,
       retry: true,
+      needs: {
+        select: {
+          id: true,
+          dependencyId: true,
+          dependency: {
+            select: {
+              id: true,
+              title: true,
+              showTask: true,
+              type: true,
+              retry: true,
+              users: {
+                where: { userId: user?.id },
+              },
+            },
+          },
+        },
+      },
+      isNeededBy: false,
     },
   });
   const userTask = await db.userTask.findFirst({
@@ -36,5 +55,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   if (!task || (!task?.showTask && !userTask)) return redirect("/");
 
-  return { user, task, userTask };
+  return {
+    user,
+    task,
+    userTask,
+    canOpen: task.needs.every(
+      (need) =>
+        need.dependency.users.length > 0 &&
+        !!need.dependency.users[0].completed_at
+    ),
+  };
 };

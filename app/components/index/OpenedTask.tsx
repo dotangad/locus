@@ -1,7 +1,8 @@
 import React from "react";
 import { Task, UserTask } from "@prisma/client";
-import Button from "../Button";
-import { Form, Link } from "remix";
+import { Link } from "remix";
+import Pills from "../task/$id/Pills";
+import Dependencies from "../task/$id/Dependencies";
 
 type TaskProps = {
   userTask: UserTask & { task: Task };
@@ -20,6 +21,16 @@ const OpenedTask: React.FC<TaskProps> = ({
         <span className="font-extrabold">&middot;</span>
         <span>{JSON.parse(task.tags).join(", ")}</span>
       </div>
+
+      <div className="mt-2">
+        <Pills task={task} className="!bg-gray-100" />
+      </div>
+
+      <Dependencies
+        task={task}
+        className="!bg-gray-100"
+        containerClassName=""
+      />
 
       {userTask.completed_at ? (
         userTask.pointsReceived !== null ? (

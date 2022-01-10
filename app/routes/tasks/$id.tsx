@@ -14,12 +14,13 @@ import DirectSubForm from "~/components/task/$id/DirectSubForm";
 import { LoaderData, loader as loaderFn } from "~/ext/tasks/$id.loader";
 import { action as actionFn } from "~/ext/tasks/$id.action";
 import GroupSubForm from "~/components/task/$id/GroupSubForm";
+import Dependencies from "~/components/task/$id/Dependencies";
 
 export const loader: LoaderFunction = loaderFn;
 export const action: ActionFunction = actionFn;
 
 export default function Task() {
-  const { task, user, userTask } = useLoaderData<LoaderData>();
+  const { task, user, userTask, canOpen } = useLoaderData<LoaderData>();
   const actionData = useActionData();
 
   return (
@@ -31,9 +32,10 @@ export default function Task() {
         <div className="flex w-full my-2 gap-x-8">
           <div className="flex-1">
             <Pills task={task} />
+            <Dependencies task={task} className="" containerClassName="mb-5" />
             <div
               dangerouslySetInnerHTML={{ __html: task.description }}
-              className="prose"
+              className="prose mt-5"
             />
           </div>
           <div className="w-1/3">
@@ -51,7 +53,7 @@ export default function Task() {
                   <DirectSubForm error={actionData?.error} />
                 )
               ) : (
-                <OpenForm taskId={task.id} />
+                <OpenForm taskId={task.id} canOpen={canOpen} />
               )}
             </div>
           </div>

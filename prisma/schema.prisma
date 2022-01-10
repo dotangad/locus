@@ -29,21 +29,31 @@ model User {
 }
 
 model Task {
-  id                 String        @id @default(uuid())
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
-  title              String        @db.Text
-  tags               String        @db.Text
+  id                 String                @id @default(uuid())
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  title              String                @db.Text
+  tags               String                @db.Text
   taskDeadline       DateTime?
   timeDecay          Int?
-  description        String        @db.LongText
-  points             Int           @default(0)
-  showTask           Boolean       @default(true)
-  answer             String?       @db.LongText
-  type               TaskType      @default(DIRECT)
+  description        String                @db.LongText
+  points             Int                   @default(0)
+  showTask           Boolean               @default(true)
+  answer             String?               @db.LongText
+  type               TaskType              @default(DIRECT)
   groupQuestions     Int?
-  retry              Boolean?       @default(false)
+  retry              Boolean?              @default(false)
   users              UserTask[]
+  needs              TaskDependency[]      @relation("task")
+  isNeededBy         TaskDependency[]      @relation("dependency")
+}
+
+model TaskDependency {
+  id             String       @id @default(uuid())
+  taskId         String
+  task           Task         @relation("task", fields: [taskId], references: [id])
+  dependencyId   String
+  dependency     Task         @relation("dependency", fields: [dependencyId], references: [id])
 }
 
 model UserTask {

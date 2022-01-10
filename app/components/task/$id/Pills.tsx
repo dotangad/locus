@@ -1,20 +1,30 @@
 import { Task } from "@prisma/client";
 import React from "react";
 
-type PillsProps = { task: Task };
-const Pills: React.FC<PillsProps> = ({ task }) => {
+type PillsProps = {
+  task: Task;
+  className?: string;
+  containerClassName?: string;
+};
+const Pills: React.FC<PillsProps> = ({
+  task,
+  className,
+  containerClassName,
+}) => {
   return (
-    <div className="flex mb-5 gap-x-2">
-      <RetryPill task={task} />
+    <div className={`flex gap-x-2 ${containerClassName}`}>
+      <RetryPill task={task} className={className} />
     </div>
   );
 };
 
-const RetryPill: React.FC<PillsProps> = ({ task }) => {
+const RetryPill: React.FC<PillsProps> = ({ task, className }) => {
   return (
     task.type === "DIRECT" &&
     task.retry && (
-      <div className="rounded-full px-3 py-2 bg-white flex items-center gap-x-[5px] text-xs tracking-wide font-bold uppercase text-gray-500 select-none">
+      <div
+        className={`rounded-full px-3 py-2 bg-white flex items-center gap-x-[5px] text-xs tracking-wide font-bold uppercase text-gray-500 select-none ${className}`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-4 h-4 text-exun"

@@ -2,6 +2,8 @@ import React from "react";
 import { Task } from "@prisma/client";
 import Button from "../Button";
 import { Form, Link } from "remix";
+import Pills from "../task/$id/Pills";
+import Dependencies from "../task/$id/Dependencies";
 
 type TaskProps = {
   task: Task;
@@ -19,6 +21,16 @@ const UnopenedTask: React.FC<TaskProps> = ({ task }: TaskProps) => {
         <span>{JSON.parse(task.tags).join(", ")}</span>
       </div>
 
+      <div className="my-2">
+        <Pills task={task} className="!bg-gray-100" />
+      </div>
+
+      <Dependencies
+        task={task}
+        className="!bg-gray-100"
+        containerClassName=""
+      />
+
       <div className="flex items-center w-full mt-5 gap-x-3">
         {task.showTask ? (
           <Link
@@ -33,10 +45,14 @@ const UnopenedTask: React.FC<TaskProps> = ({ task }: TaskProps) => {
         ) : (
           <Button disabled={true}>View</Button>
         )}
-        <Form method="post" action="/tasks/open">
-          <input type="hidden" name="id" value={task.id} />
-          <Button type="submit">Open</Button>
-        </Form>
+        {task.canOpen ? (
+          <Form method="post" action="/tasks/open">
+            <input type="hidden" name="id" value={task.id} />
+            <Button type="submit">Open</Button>
+          </Form>
+        ) : (
+          <Button disabled={true}>Open</Button>
+        )}
       </div>
 
       {/*<div
