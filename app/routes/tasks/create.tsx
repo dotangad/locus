@@ -26,49 +26,61 @@ export const loader: LoaderFunction = async ({ request }) => {
 type ActionData = {
   formError?: string;
   fieldErrors?: {
-    email: string | undefined;
-    schoolName: string | undefined;
-    password: string | undefined;
+    title: string | undefined;
+    tags: string | undefined;
+    open: string | undefined;
+    description: string | undefined;
+    points: string | undefined;
+    showTask: string | undefined;
+    answer: string | undefined;
+    type: string | undefined;
+    groupQuestions: string | undefined;
+    retry: string | undefined;
   };
   fields?: {
-    email: string | undefined;
-    schoolName: string | undefined;
-    password: string | undefined;
+    title: string | undefined;
+    tags: string | undefined;
+    open: boolean | undefined;
+    description: string | undefined;
+    points: number | undefined;
+    showTask: boolean | undefined;
+    answer: string | undefined;
+    type: string | undefined;
+    groupQuestions: number | undefined;
+    retry: boolean | undefined;
   };
 };
 export const action: ActionFunction = async ({ request }) => {
-  const validateEmail = (email: string) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  };
-  const { email, schoolName, password } = Object.fromEntries(
-    await request.formData()
-  );
+  const {
+    title,
+    tags,
+    open,
+    description,
+    points,
+    showTask,
+    answer,
+    type,
+    groupQuestions,
+    retry,
+  } = Object.fromEntries(await request.formData());
 
-  if (!schoolName || schoolName == "")
-    return {
-      fields: { email, schoolName, password },
-      fieldErrors: { schoolName: "School name can not be empty" },
-    };
+  // const task = await db.task.create({
+  //   data: {
+  //     title,
+  //     tags,
+  //     open,
+  //     description,
+  //     points,
+  //     showTask,
+  //     answer,
+  //     type,
+  //     groupQuestions,
+  //     retry,
+  //   },
+  // });
 
-  if (!email || schoolName == "" || !validateEmail(email as string))
-    return {
-      fields: { email, schoolName, password },
-      fieldErrors: { email: "Please enter a valid email" },
-    };
-
-  const check = await db.user.findUnique({ where: { email: email as string } });
-  if (check) return { formError: "An account with that email already exists" };
-
-  const user = await db.user.create({
-    data: {
-      schoolName: schoolName as string,
-      email: email as string,
-      password: await bcrypt.hash(password as string, 10),
-    },
-  });
-
-  return redirect(`/admin/users/${user.id}`);
+  // return redirect(`/admin/task/${task.id}`);
+  return { formError: "hello" };
 };
 
 export default function () {
@@ -180,9 +192,6 @@ export default function () {
                     />
                   </svg>
                 </button>
-              </div>
-              <div className="my-5 text-xs font-bold text-red-500 text-center">
-                {actionData?.formError}
               </div>
               <div className="w-full flex justify-center mt-8">
                 <Button
