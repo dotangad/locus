@@ -54,8 +54,20 @@ export async function getUserId(request: Request) {
 export async function ensureAuthenticated(request: Request, redirectTo = "/") {
   let session = await getUserSession(request);
   let userId = session.get("userId");
-  if (!userId || typeof userId !== "string")
+  let sessionId = session.get("sessionId");
+  if (
+    !userId ||
+    typeof userId !== "string" ||
+    !sessionId ||
+    typeof sessionId !== "string"
+  )
     throw redirect(`/auth/login?redirectTo=${redirectTo}`);
+
+  await db.session.update({
+    where: { id: sessionId },
+    data: { lastSeen: new Date() },
+  });
+
   return userId;
 }
 
@@ -86,15 +98,37 @@ export async function getUser(request: Request) {
 }
 
 export async function logout(request: Request) {
-  let session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(request.headers.get("Cookie"));
+  const sessionId = session.get("sessionId");
+  await db.session.update({
+    where: { id: sessionId },
+    data: { active: false, logoutAt: new Date() },
+  });
+
   return redirect("/auth/login", {
     headers: { "Set-Cookie": await destroySession(session) },
   });
 }
 
-export async function createUserSession(userId: string, redirectTo: string) {
+export async function createUserSession(
+  userId: string,
+  redirectTo: string,
+  request: Request
+) {
   let session = await getSession();
+  const dbSession = await db.session.create({
+    data: {
+      userId,
+      userAgent: request.headers.get("User-Agent"),
+      ip:
+        request.headers.get("X-Forwarded-For") ||
+        request.headers.get("X-Real-IP") ||
+        "unknown",
+    },
+  });
+
   session.set("userId", userId);
+  session.set("sessionId", dbSession.id);
   return redirect(redirectTo, {
     headers: { "Set-Cookie": await commitSession(session) },
   });

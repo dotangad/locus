@@ -18,6 +18,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function () {
   const { user, users } = useLoaderData<LoaderData>();
   const navigate = useNavigate();
+
   return (
     <Layout user={user}>
       <div className="px-5 mx-auto max-w-screen-sm">

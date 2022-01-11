@@ -25,7 +25,21 @@ model User {
   password   String
   points     Int      @default(0)
   admin      Boolean  @default(false)
+  sessions   Session[]
   tasks      UserTask[]
+}
+
+model Session {
+  id            String     @id @default(uuid())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  lastSeen      DateTime   @default(now())
+  ip            String
+  userAgent     String
+  active        Boolean    @default(true)
+  logoutAt      DateTime?
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
 }
 
 model Task {

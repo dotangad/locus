@@ -47,7 +47,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
   }
 
-  return createUserSession(user.id, "/");
+  return createUserSession(user.id, "/", request);
 };
 
 export default function Login() {
