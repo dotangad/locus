@@ -7,7 +7,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
   return (
     <div className="my-8 flex items-center gap-x-3 bg-white rounded p-6">
       <div
-        className="rounded-xl flex items-center justify-center p-3 bg-gray-100 cursor-pointer"
+        className="rounded-xl flex items-center justify-center p-3 bg-gray-100 cursor-pointer shadow-md hover:shadow-xl transition"
         onClick={() => navigate(-1)}
       >
         <svg

@@ -24,7 +24,7 @@ export default function () {
       <div className="px-5 mx-auto max-w-screen-sm">
         <div className="my-8 flex items-center gap-x-3 bg-white rounded p-6">
           <div
-            className="rounded-xl flex items-center justify-center p-3 bg-gray-100 cursor-pointer"
+            className="rounded-xl flex items-center justify-center p-3 bg-gray-100 cursor-pointer shadow-md"
             onClick={() => navigate(-1)}
           >
             <svg
@@ -42,11 +42,19 @@ export default function () {
               />
             </svg>
           </div>
-          <div>
+          <div className="flex-1">
             <div className="text-exun font-bold text-xl">Users</div>
             <div className="text-gray-500 text-md">
               Click on a tile to see opened tasks
             </div>
+          </div>
+          <div>
+            <Link
+              to="/admin/users/create"
+              className="bg-exun text-white uppercase font-bold p-3 rounded-lg"
+            >
+              Create
+            </Link>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-y-5">
