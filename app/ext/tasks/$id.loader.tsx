@@ -28,6 +28,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       type: true,
       groupQuestions: true,
       retry: true,
+      open: true,
       needs: {
         select: {
           id: true,

@@ -53,7 +53,7 @@ export const checkDirect = async ({
 
     await db.user.update({
       where: { id: user?.id },
-      data: { points: user?.points ?? 0 + points },
+      data: { points: (user?.points ?? 0) + points },
     });
   }
 
@@ -93,7 +93,7 @@ export const checkGroup = async ({
 
   await db.user.update({
     where: { id: user?.id },
-    data: { points: user?.points ?? 0 + points },
+    data: { points: (user?.points ?? 0) + points },
   });
 
   return {};

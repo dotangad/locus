@@ -32,76 +32,71 @@ const OpenedTask: React.FC<TaskProps> = ({
         containerClassName=""
       />
 
-      {userTask.completed_at ? (
-        userTask.pointsReceived !== null ? (
-          <div className="flex items-center w-full mt-5 gap-x-2 text-gray-600">
-            <div className="text-green-700 font-bold flex items-center uppercase gap-x-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <span>Completed</span>
+      {task.open &&
+        (userTask.completed_at ? (
+          userTask.pointsReceived !== null ? (
+            <div className="flex items-center w-full mt-5 gap-x-2 text-gray-600">
+              <div className="text-green-700 font-bold flex items-center uppercase gap-x-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>Completed</span>
+              </div>
+              <div>&middot;</div>
+              <div>
+                {userTask.pointsReceived} / {task.points}
+              </div>
             </div>
-            <div>&middot;</div>
-            <div>
-              {userTask.pointsReceived} / {task.points}
+          ) : (
+            <div className="flex items-center w-full mt-5 gap-x-2 text-gray-600">
+              <div className="text-green-700 font-bold flex items-center uppercase gap-x-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>Completed</span>
+              </div>
+              <div>&middot;</div>
+              <div>Unchecked</div>
             </div>
-          </div>
+          )
         ) : (
-          <div className="flex items-center w-full mt-5 gap-x-2 text-gray-600">
-            <div className="text-green-700 font-bold flex items-center uppercase gap-x-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <span>Completed</span>
+          <div className="flex items-center w-full mt-5 gap-x-3">
+            <Link
+              {...{
+                to: `/tasks/${task.id}`,
+                disabled: !task.showTask,
+                className: `cursor-pointer bg-exun block rounded-lg p-4 text-center uppercase leading-none font-bold text-sm text-white transition outline-exun-light !focus:outline-8 focus:shadow-none disabled:bg-gray-600 disabled:cursor-not-allowed`,
+              }}
+            >
+              View
+            </Link>
+            <div className="text-gray-600 text-sm">
+              Opened at {userTask.createdAt}
             </div>
-            <div>&middot;</div>
-            <div>Unchecked</div>
           </div>
-        )
-      ) : (
-        <div className="flex items-center w-full mt-5 gap-x-3">
-          <Link
-            {...{
-              to: `/tasks/${task.id}`,
-              disabled: !task.showTask,
-              className: `cursor-pointer bg-exun block rounded-lg p-4 text-center uppercase leading-none font-bold text-sm text-white transition outline-exun-light !focus:outline-8 focus:shadow-none disabled:bg-gray-600 disabled:cursor-not-allowed`,
-            }}
-          >
-            View
-          </Link>
-          <div className="text-gray-600 text-sm">
-            Opened at {userTask.createdAt}
-          </div>
-        </div>
-      )}
-
-      {/*<div
-        dangerouslySetInnerHTML={{ __html: task.description }}
-        className="prose my-5"
-        />*/}
-      {/*<pre>{JSON.stringify(task, null, 2)}</pre>*/}
+        ))}
     </div>
   );
 };

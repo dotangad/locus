@@ -14,6 +14,7 @@ const Pills: React.FC<PillsProps> = ({
   return (
     <div className={`flex gap-x-2 ${containerClassName}`}>
       <RetryPill task={task} className={className} />
+      <ClosedPill task={task} className={className} />
     </div>
   );
 };
@@ -42,6 +43,32 @@ const RetryPill: React.FC<PillsProps> = ({ task, className }) => {
         <span>Retries allowed</span>
       </div>
     )
+  );
+};
+
+const ClosedPill: React.FC<PillsProps> = ({ task, className }) => {
+  return task.open ? (
+    <></>
+  ) : (
+    <div
+      className={`rounded-full px-3 py-2 bg-white flex items-center gap-x-[5px] text-xs tracking-wide font-bold uppercase text-gray-500 select-none ${className}`}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4 text-red-500"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span>Closed</span>
+    </div>
   );
 };
 

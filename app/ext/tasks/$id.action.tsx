@@ -27,6 +27,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       groupQuestions: true,
       retry: true,
       answer: true,
+      open: true,
       needs: {
         select: {
           id: true,
@@ -56,6 +57,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   if (
     task &&
     userTask &&
+    task.open &&
     task.needs.every(
       (need) =>
         need.dependency.users.length > 0 &&

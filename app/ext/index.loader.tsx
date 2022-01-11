@@ -28,6 +28,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       type: true,
       groupQuestions: true,
       retry: true,
+      open: true,
       needs: {
         select: {
           id: true,
@@ -67,6 +68,7 @@ export const loader: LoaderFunction = async ({ request }) => {
           showTask: true,
           type: true,
           groupQuestions: true,
+          open: true,
           retry: true,
           needs: {
             select: {

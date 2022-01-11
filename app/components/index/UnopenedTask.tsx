@@ -45,7 +45,7 @@ const UnopenedTask: React.FC<TaskProps> = ({ task }: TaskProps) => {
         ) : (
           <Button disabled={true}>View</Button>
         )}
-        {task.canOpen ? (
+        {task.canOpen && task.open ? (
           <Form method="post" action="/tasks/open">
             <input type="hidden" name="id" value={task.id} />
             <Button type="submit">Open</Button>

@@ -19,7 +19,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   const users = await db.user.findMany({
     select: { id: true, schoolName: true, points: true },
-    // where: { admin: false },
+    where: { admin: false },
     orderBy: [{ points: "desc" }],
   });
 

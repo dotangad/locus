@@ -38,25 +38,27 @@ export default function Task() {
               className="prose mt-5"
             />
           </div>
-          <div className="w-1/3">
-            <div className="w-full p-5 bg-white rounded shadow-md">
-              {userTask ? (
-                userTask.completed_at ? (
-                  <CompletedCard userTask={userTask} task={task} />
-                ) : task.type === "GROUP" ? (
-                  <GroupSubForm
-                    userTask={userTask}
-                    task={task}
-                    error={actionData?.error}
-                  />
+          {task.open && (
+            <div className="w-1/3">
+              <div className="w-full p-5 bg-white rounded shadow-md">
+                {userTask ? (
+                  userTask.completed_at ? (
+                    <CompletedCard userTask={userTask} task={task} />
+                  ) : task.type === "GROUP" ? (
+                    <GroupSubForm
+                      userTask={userTask}
+                      task={task}
+                      error={actionData?.error}
+                    />
+                  ) : (
+                    <DirectSubForm error={actionData?.error} />
+                  )
                 ) : (
-                  <DirectSubForm error={actionData?.error} />
-                )
-              ) : (
-                <OpenForm taskId={task.id} canOpen={canOpen} />
-              )}
+                  <OpenForm taskId={task.id} canOpen={canOpen} />
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </Layout>

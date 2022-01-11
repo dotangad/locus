@@ -35,6 +35,7 @@ model Task {
   title              String                @db.Text
   tags               String                @db.Text
   taskDeadline       DateTime?
+  open               Boolean               @default(true)
   timeDecay          Int?
   description        String                @db.LongText
   points             Int                   @default(0)
