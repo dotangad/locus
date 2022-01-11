@@ -1,7 +1,11 @@
 import { User } from "@prisma/client";
 import { LoaderFunction, useLoaderData } from "remix";
 import { db } from "~/utils/db.server";
-import { ensureAuthenticated, getUser } from "~/utils/session.server";
+import {
+  ensureAdmin,
+  ensureAuthenticated,
+  getUser,
+} from "~/utils/session.server";
 import Layout from "~/components/Layout";
 
 type LoaderData = {
@@ -15,8 +19,7 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  await ensureAuthenticated(request);
-  const user = await getUser(request);
+  const user = await ensureAdmin(request);
   const users = await db.user.findMany({
     select: { id: true, schoolName: true, points: true },
     where: { admin: false },

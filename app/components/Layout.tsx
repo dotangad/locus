@@ -22,8 +22,8 @@ const Layout: React.FC<LayoutProps> = ({
 }: LayoutProps) => {
   links = links ?? [];
   user?.admin && links.push({ href: "/admin", label: "Admin" });
+  user?.admin && links.push({ href: "/leaderboard", label: "Leaderboard" });
   user && links.push({ href: "/", label: "Tasks" });
-  user && links.push({ href: "/leaderboard", label: "Leaderboard" });
 
   return (
     <div className="flex flex-col w-full h-full bg-gray-bg min-h-screen">
