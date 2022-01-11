@@ -11,8 +11,6 @@ export default function Index() {
   const { user, openedTasks, completedTasks, unopenedTasks } =
     useLoaderData<LoaderData>();
 
-  console.log({ unopenedTasks });
-
   return (
     <Layout user={user}>
       <div className="px-5">

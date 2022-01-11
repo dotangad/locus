@@ -59,6 +59,13 @@ export async function ensureAuthenticated(request: Request, redirectTo = "/") {
   return userId;
 }
 
+export async function ensureAdmin(request: Request, redirectTo = "/") {
+  await ensureAuthenticated(request, "/");
+  const user = await getUser(request);
+  if (!user?.admin) throw redirect(redirectTo);
+  return user;
+}
+
 export async function ensureGuest(request: Request, redirectTo = "/") {
   const user = await getUser(request);
   console.log({ user });
