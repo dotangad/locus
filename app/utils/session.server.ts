@@ -80,7 +80,6 @@ export async function ensureAdmin(request: Request, redirectTo = "/") {
 
 export async function ensureGuest(request: Request, redirectTo = "/") {
   const user = await getUser(request);
-  console.log({ user });
   if (user) throw redirect(redirectTo);
   return null;
 }
