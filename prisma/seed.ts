@@ -1,7 +1,7 @@
 import { PrismaClient, TaskType } from "@prisma/client";
 import { add } from "date-fns";
 import faker from "faker";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 const db = new PrismaClient();
 
 async function seedUsers(n: number) {

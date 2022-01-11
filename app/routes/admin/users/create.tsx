@@ -9,12 +9,11 @@ import {
   useNavigate,
   useTransition,
 } from "remix";
-import bcrypt from "bcrypt";
-import { generateSlug } from "random-words";
+import bcrypt from "bcryptjs";
 import Layout from "~/components/Layout";
 import { ensureAdmin } from "~/utils/session.server";
 import TextInput from "~/components/TextInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "~/components/Button";
 import { db } from "~/utils/db.server";
 
@@ -62,7 +61,7 @@ export const action: ActionFunction = async ({ request }) => {
     data: {
       schoolName: schoolName as string,
       email: email as string,
-      password: await bcrypt.hash(password, 10),
+      password: await bcrypt.hash(password as string, 10),
     },
   });
 
@@ -70,17 +69,23 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function () {
-  const generatePassword = (n = 3) => {
-    return generateSlug(n, {
-      partsOfSpeech: ["adjective", "adjective", "noun"],
-    });
-  };
-
   const { user } = useLoaderData<LoaderData>();
   const navigate = useNavigate();
   const transition = useTransition();
   const actionData = useActionData<ActionData | undefined>();
-  const [password, setPassword] = useState<string>(generatePassword(3));
+  const [password, setPassword] = useState<string>("");
+  const generatePassword = async (n = 3) => {
+    const res = await fetch(
+      `https://random-word-api.herokuapp.com/word?number=${n}`
+    );
+    const data = await res.json();
+
+    return setPassword(data.join("-"));
+  };
+
+  useEffect(() => {
+    generatePassword();
+  }, []);
 
   return (
     <Layout user={user}>
@@ -115,7 +120,11 @@ export default function () {
         </div>
 
         <div className="my-8">
-          <Form method="post" className="max-w-[400px] mx-auto">
+          <Form
+            method="post"
+            action="/admin/users/create"
+            className="max-w-[400px] mx-auto"
+          >
             <TextInput
               id="schoolName"
               name="schoolName"
@@ -150,9 +159,7 @@ export default function () {
                 <button
                   className="text-exun bg-white rounded shadow-sm hover:shadow-lg transition p-2"
                   onClick={() =>
-                    setPassword(
-                      generatePassword(((Math.random() * 10) % 3) + 2)
-                    )
+                    generatePassword(((Math.random() * 10) % 3) + 2)
                   }
                 >
                   <svg
