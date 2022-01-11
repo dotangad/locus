@@ -10,7 +10,7 @@ import {
   useTransition,
 } from "remix";
 import bcrypt from "bcrypt";
-import randomWords from "random-words";
+import { generateSlug } from "random-words";
 import Layout from "~/components/Layout";
 import { ensureAdmin } from "~/utils/session.server";
 import TextInput from "~/components/TextInput";
@@ -71,7 +71,9 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function () {
   const generatePassword = (n = 3) => {
-    return randomWords({ exactly: n, join: "-" });
+    return generateSlug(n, {
+      partsOfSpeech: ["adjective", "adjective", "noun"],
+    });
   };
 
   const { user } = useLoaderData<LoaderData>();
